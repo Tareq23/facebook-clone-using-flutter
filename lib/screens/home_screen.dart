@@ -1,4 +1,5 @@
 import 'package:facebookclone/config/palette.dart';
+import 'package:facebookclone/data/data.dart';
 import 'package:facebookclone/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -37,6 +38,9 @@ class HomeScreen extends StatelessWidget {
                   onPressed: () => print("Messengar"),
               )
             ],
+          ),
+          SliverToBoxAdapter(
+            child: CreatePostContainer(currentUser: currentUser,)
           )
         ],
       ),
