@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
+import '../models/models.dart';
+
 class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
 
@@ -33,27 +35,40 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () => print("search"),
               ),
               CircleButton(
-                  icon: MdiIcons.facebookMessenger,
-                  iconSize: 30.0,
-                  onPressed: () => print("Messengar"),
+                icon: MdiIcons.facebookMessenger,
+                iconSize: 30.0,
+                onPressed: () => print("Messengar"),
               )
             ],
           ),
           SliverToBoxAdapter(
-            child: CreatePostContainer(currentUser: currentUser,)
-          ),
+              child: CreatePostContainer(
+            currentUser: currentUser,
+          )),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 5.0),
             sliver: SliverToBoxAdapter(
-              child: Rooms(onlineUsers: onlineUsers,),
+              child: Rooms(
+                onlineUsers: onlineUsers,
+              ),
             ),
           ),
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
             sliver: SliverToBoxAdapter(
-              child: Stories(currentUser: currentUser,stories: stories),
+              child: Stories(currentUser: currentUser, stories: stories),
             ),
           ),
+          SliverList(
+            delegate: SliverChildBuilderDelegate(
+              childCount: posts.length,
+              (BuildContext context, int index) {
+                Post post = posts[index];
+                print("image url : -->   ${post.imageUrl}");
+                return PostContainer(post: post);
+              },
+            ),
+          )
         ],
       ),
     );
