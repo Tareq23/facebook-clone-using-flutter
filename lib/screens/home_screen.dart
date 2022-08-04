@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
               childCount: posts.length,
               (BuildContext context, int index) {
                 Post post = posts[index];
-                print("image url : -->   ${post.imageUrl}");
+                // print("image url : -->   ${post.imageUrl}");
                 return PostContainer(post: post);
               },
             ),
