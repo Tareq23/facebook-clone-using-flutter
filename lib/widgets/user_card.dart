@@ -1,5 +1,3 @@
-
-
 import 'package:facebookclone/widgets/profile_avater.dart';
 import 'package:flutter/material.dart';
 
@@ -12,13 +10,20 @@ class UserCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: ()=>print('user profile'),
+      onTap: () => print('user profile'),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           ProfileAvater(imageUrl: user.imageUrl),
-          const SizedBox(width: 4.0,),
-          Text(user.name,style: TextStyle(fontSize: 16.0),)
+          const SizedBox(
+            width: 4.0,
+          ),
+          Flexible(
+              child: Text(
+            user.name,
+            style: TextStyle(fontSize: 16.0),
+                overflow: TextOverflow.ellipsis,
+          ))
         ],
       ),
     );
