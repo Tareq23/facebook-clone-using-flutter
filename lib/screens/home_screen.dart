@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:facebookclone/config/palette.dart';
 import 'package:facebookclone/data/data.dart';
 import 'package:facebookclone/widgets/widgets.dart';
@@ -7,8 +9,23 @@ import 'package:material_design_icons_flutter/material_design_icons_flutter.dart
 
 import '../models/models.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+
+  final TrackingScrollController trackingScrollController = TrackingScrollController();
+
+
+  @override
+  void dispose() {
+    trackingScrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +33,8 @@ class HomeScreen extends StatelessWidget {
       onTap: ()=>Focus.of(context).unfocus(),
       child: Scaffold(
         body: Responsive(
-          mobile: _HomeScreenMobile(),
-          desktop: _HomeScreenDesktop(),
+          mobile: _HomeScreenMobile(scrollController : trackingScrollController),
+          desktop: _HomeScreenDesktop(scrollController : trackingScrollController),
         ),
       ),
     );
@@ -26,11 +43,13 @@ class HomeScreen extends StatelessWidget {
 
 
 class _HomeScreenMobile extends StatelessWidget {
-  const _HomeScreenMobile({Key? key}) : super(key: key);
+  final TrackingScrollController scrollController;
+  const _HomeScreenMobile({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
+      controller: scrollController,
       slivers: [
         SliverAppBar(
           systemOverlayStyle: SystemUiOverlayStyle.light,
@@ -93,7 +112,8 @@ class _HomeScreenMobile extends StatelessWidget {
 
 
 class _HomeScreenDesktop extends StatelessWidget {
-  const _HomeScreenDesktop({Key? key}) : super(key: key);
+  final TrackingScrollController scrollController;
+  const _HomeScreenDesktop({Key? key, required this.scrollController}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -110,7 +130,14 @@ class _HomeScreenDesktop extends StatelessWidget {
           width: 600.0,
           color: Colors.white,
           child: CustomScrollView(
+            controller: scrollController,
             slivers: [
+              SliverPadding(
+                padding: const EdgeInsets.fromLTRB(0.0, 20.0, 0.0, 10.0),
+                sliver: SliverToBoxAdapter(
+                  child: Stories(currentUser: currentUser, stories: stories),
+                ),
+              ),
               // SliverAppBar(
               //   systemOverlayStyle: SystemUiOverlayStyle.light,
               //   backgroundColor: Colors.white,
@@ -149,12 +176,7 @@ class _HomeScreenDesktop extends StatelessWidget {
                   ),
                 ),
               ),
-              SliverPadding(
-                padding: const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
-                sliver: SliverToBoxAdapter(
-                  child: Stories(currentUser: currentUser, stories: stories),
-                ),
-              ),
+
               SliverList(
                 delegate: SliverChildBuilderDelegate(
                   childCount: posts.length,
